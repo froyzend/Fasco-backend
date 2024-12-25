@@ -1,19 +1,18 @@
 const express = require("express");
-const cors = require("cors");
-require("dotenv").config();
+const dotenv = require("dotenv");
+const authRoutes = require("./routes/auth");
+
+dotenv.config();
 
 const app = express();
-app.use(cors());
-app.use(express.json()); /* Для обработки JSON в запросах*/
+app.use(express.json());
 
-/* Пример маршрута*/
-app.get("/api/products", (req, res) => {
-  res.json([
-    { id: 1, name: "Product 1", price: 100 },
-    { id: 2, name: "Product 2", price: 200 },
-  ]);
+/* Маршруты */
+app.use("/users", authRoutes);
+
+app.get("/", (req, res) => {
+  res.send("Backend server is running");
 });
 
-/* Запуск сервера*/
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
